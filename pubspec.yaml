@@ -1,0 +1,38 @@
+name: game_failing_down
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.14.0
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/kenney_jumper_pack/
+    - assets/images/kenney_jumper_pack/PNG/
+    - assets/images/kenney_jumper_pack/PNG/Background/
+    - assets/images/kenney_jumper_pack/PNG/Enemies/
+    - assets/images/kenney_jumper_pack/PNG/Environment/
+    - assets/images/kenney_jumper_pack/PNG/HUD/
+    - assets/images/kenney_jumper_pack/PNG/Items/
+    - assets/images/kenney_jumper_pack/PNG/Particles/
+    - assets/images/kenney_jumper_pack/PNG/Players/
+    - assets/images/kenney_jumper_pack/Spritesheets/
+    - assets/images/kenney_jumper_pack/Vector/
