@@ -1,11 +1,41 @@
+import 'dart:ui' as UI;
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/ns_runner.dart';
+import 'package:image/image.dart' as img;
+
+
+enum BunnyState {
+  hurt('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png'),
+  walkRight('assets/images/kenney_jumper_pack/PNG/Players/bunny1_walk_right1.png'),
+  walkLeft('assets/images/kenney_jumper_pack/PNG/Players/bunny1_walk_left1.png'),
+  ready('assets/images/kenney_jumper_pack/PNG/Players/bunny1_ready.png'),
+  stand('assets/images/kenney_jumper_pack/PNG/Players/bunny1_stand.png');
+
+  final String path;
+
+  const BunnyState(this.path);
+  
+  static String getResFromIndex (int index){
+    return BunnyState.values[index].path;
+  }
+
+  static String getRes(BunnyState state) {
+    for (BunnyState s in BunnyState.values) {
+      if (s == state) {
+        return s.path;
+      }
+    }
+    return "";
+  }
+}
 
 class MainCharacter extends PositionComponent
     with CollisionCallbacks, DragCallbacks, HasGameReference<NsRunner> {
@@ -27,16 +57,59 @@ class MainCharacter extends PositionComponent
 
   bool isStandOnFloor = false;
   double floorPosition = 0.0;
+  List<UI.Image> images = [];
+  BunnyState? state;
+
+
+
+  Future<UI.Image> loadImage(String path) async {
+    ByteData data = await rootBundle.load(path);
+    Uint8List bytes = data.buffer.asUint8List();
+    img.Image? image = img.decodePng(bytes.buffer.asUint8List());
+    img.Image? resized = img.copyResize(image!, width: 60, height: 100);
+    Uint8List resizedByteData = img.encodePng(resized);
+    return await decodeImageFromList(resizedByteData);
+  }
+
+  @override
+  Future<void> onLoad() async {
+    for (int i = 0; i < BunnyState.values.length; i++) {
+      images.add(await loadImage(BunnyState.getResFromIndex(i)));
+    }
+  }
+
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          Offset.zero & size.toSize(),
-          cornerRadius,
-        ),
-        _paint);
+    print("render ..... $state");
+    switch(state) {
+      case BunnyState.hurt :
+        canvas.drawImage(images[0], Offset.zero, _paint);
+        break;
+      case BunnyState.walkRight :
+        canvas.drawImage(images[1], Offset.zero, _paint);
+        break;
+      case BunnyState.walkLeft :
+        canvas.drawImage(images[2], Offset.zero, _paint);
+        break;
+      case BunnyState.ready :
+        canvas.drawImage(images[3], Offset.zero, _paint);
+        break;
+      case BunnyState.stand :
+        canvas.drawImage(images[4], Offset.zero, _paint);
+        break;
+      default :
+        canvas.drawImage(images[4], Offset.zero, _paint);
+        break;
+    }
+
+    // canvas.drawRRect(
+    //     RRect.fromRectAndRadius(
+    //       Offset.zero & size.toSize(),
+    //       cornerRadius,
+    //     ),
+    //     _paint);
   }
 
   @override // Add from here...
@@ -44,8 +117,6 @@ class MainCharacter extends PositionComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is PlayArea) {
-
-
       if (intersectionPoints.first.y <= game.height ||
           intersectionPoints.first.x >= game.width) {
         if (intersectionPoints.first.x <= 0 || intersectionPoints.first.x >= game.width) {
@@ -59,6 +130,7 @@ class MainCharacter extends PositionComponent
       }
     } else if (other is NormalFloor) {
       isStandOnFloor = true;
+      state = BunnyState.stand;
       velocity.y = other.velocity.y;
       debugPrint('gggg collision with $other');
     } else {
@@ -95,6 +167,12 @@ class MainCharacter extends PositionComponent
   }
 
   void moveBy(double dx) {
+    print("dx ${dx}");
+    if(dx < 0) {
+      state = BunnyState.walkLeft;
+    } else {
+      state = BunnyState.walkRight;
+    }
     add(MoveToEffect(
       Vector2(
         (position.x + dx).clamp(width / 2, game.width - width / 2),
