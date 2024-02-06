@@ -38,16 +38,27 @@ class NsRunner extends FlameGame<NSShaftWorld>
   createComponent(World world) {
     Time.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       double level = 100;
-      double randHeight = screenSize.height;
-      double randWidth = math.Random().nextDouble() * screenSize.width;
-      Vector2 position = Vector2(randWidth, randHeight);
+      double x = math.Random().nextDouble() * screenSize.width;
+      double y = screenSize.height;
+      Vector2 position = Vector2(x, y);
       Vector2 speed = Vector2(level, level);
-      world.add(NormalFloor(
+      world.add(NormalFloor.random(
           radius: ballRadius,
           position: position,
           velocity: speed.normalized()
-            ..scale(height / 4)));
+            ..scale(height / 4), random: Random()));
     });
+  }
+
+  initFloor() {
+    double level = 100;
+    Vector2 position = Vector2(screenSize.width / 2, screenSize.height);
+    Vector2 speed = Vector2(level, level);
+    world.add(NormalFloor(
+        radius: ballRadius,
+        position: position,
+        velocity: speed.normalized()
+          ..scale(height / 4)));
   }
 
 
@@ -62,6 +73,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
     super.onLoad();
     camera.viewfinder.anchor = Anchor.topLeft;
     world.add(PlayArea());
+    initFloor();
     createComponent(world);
     await world.add(
       FlameBlocProvider<PlayerBloc, PlayerState>.value(
