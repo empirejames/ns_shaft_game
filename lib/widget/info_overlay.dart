@@ -1,32 +1,18 @@
-import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 
 class InfoOverlay extends StatelessWidget {
-  const InfoOverlay(this.bloc, {super.key});
+  const InfoOverlay({super.key});
   
-  final PlayerBloc bloc;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocBuilder<PlayerBloc, PlayerState>(
-        bloc: bloc,
-        buildWhen: (previous, current) => previous.life != current.life,
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Positioned(
-                left: 10,
-                top: 0,
-                child: LifeCounter(state.life),
-              ),
-            ],
-          );
-        }
-      ),
+    return BlocBuilder<PlayerBloc, PlayerState>(
+      buildWhen: (previous, current) => previous.life != current.life,
+      builder: (context, state) {
+        return LifeCounter(state.life);
+      }
     );
   }
 }
@@ -57,7 +43,11 @@ class LifeCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: _build(),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(width: 10,),
+        ..._build(),
+      ],
     );
   }
 }

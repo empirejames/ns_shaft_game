@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/config.dart';
 import 'package:game_failing_down/ns_shaft_world.dart';
@@ -8,17 +10,13 @@ import 'package:game_failing_down/ns_shaft_world.dart';
 class ControlOverlay extends StatefulWidget {
   const ControlOverlay({
     super.key,
-    required this.world,
   });
-
-  final NSShaftWorld world;
 
   @override
   State<ControlOverlay> createState() => _ControlOverlayState();
 }
 
 class _ControlOverlayState extends State<ControlOverlay> {
-  Timer? controlTimer;
   bool shouldStopLeft = false;
   bool shouldStopRight = false;
 
@@ -32,18 +30,14 @@ class _ControlOverlayState extends State<ControlOverlay> {
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTapDown: (_) {
-              if (controlTimer == null) {
-                shouldStopLeft = true;
-                controlTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-                  widget.world.children.query<MainCharacter>().first.moveBy(-batStep);
-                });
-              }
+              context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.left));
+              shouldStopLeft = true;
+              shouldStopRight = false;
             },
             onTapUp: (_) {
               if (shouldStopLeft) {
                 shouldStopLeft = false;
-                controlTimer?.cancel();
-                controlTimer = null;
+                context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
               }
             },
             child: Icon(
@@ -59,18 +53,14 @@ class _ControlOverlayState extends State<ControlOverlay> {
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTapDown: (_) {
-              if (controlTimer == null) {
-                shouldStopRight = true;
-                controlTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-                  widget.world.children.query<MainCharacter>().first.moveBy(batStep);
-                });
-              }
+              context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.right));
+              shouldStopRight = true;
+              shouldStopLeft = false;
             },
             onTapUp: (_) {
               if (shouldStopRight) {
+                context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
                 shouldStopRight = false;
-                controlTimer?.cancel();
-                controlTimer = null;
               }
             },
             child: Icon(
