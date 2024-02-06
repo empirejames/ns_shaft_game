@@ -17,6 +17,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     on<PlayerUpdateDirectionEvent>(_updateDirection);
     on<PlayerRespwanEvent>(_respwan);
     on<PlayerStartEvent>(_startGame);
+    on<AddLevelEvent>(_addLevel);
   }
 
   _updateDirection(PlayerUpdateDirectionEvent event, Emitter<PlayerState> emit) {
@@ -24,10 +25,15 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   _respwan(_, Emitter<PlayerState> emit) {
-    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn));
+    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn, level: 1, life: 10));
   }
 
   _startGame(_, Emitter<PlayerState> emit) {
     emit(state.copyWith(direction: Direction.none, status: GameStatus.playing));
+  }
+
+  _addLevel(_, Emitter<PlayerState> emit) {
+    final newLevel = state.level + 1;
+    emit(state.copyWith(level: newLevel));
   }
 }

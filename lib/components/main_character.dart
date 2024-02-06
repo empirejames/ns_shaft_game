@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
+import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/config.dart';
@@ -52,13 +53,16 @@ class PlayerController extends Component with HasGameReference<NsRunner>, FlameB
     if (state.status == GameStatus.respawn) {
       game.overlays.remove('GG');
       game.bloc.add(PlayerStartEvent());
-      parent?.add(game.player =  MainCharacter(
-            velocity : Vector2(0,0),
-            size: Vector2(60, 100),
-            game: game,
-            cornerRadius: const Radius.circular(ballRadius / 2),
-            position: Vector2(100, 100),
-          ));
+      parent?.addAll([
+        game.player =  MainCharacter(
+          velocity : Vector2(0,0),
+          size: Vector2(60, 100),
+          game: game,
+          cornerRadius: const Radius.circular(ballRadius / 2),
+          position: Vector2(100, 100),
+        ),
+        game.levelTimer = LevelTimer(game: game),
+      ]);
     }
   }
 }
@@ -207,6 +211,7 @@ class MainCharacter extends PositionComponent
 
     if (position.y > game.screenSize.height) {
       game.overlays.add('GG');
+      game.levelTimer.removeFromParent();
       removeFromParent();
     }
   }

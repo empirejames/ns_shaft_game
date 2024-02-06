@@ -8,21 +8,22 @@ class InfoOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PlayerBloc, PlayerState>(
-      buildWhen: (previous, current) => previous.life != current.life,
-      builder: (context, state) {
-        return LifeCounter(state.life);
-      }
+    return const Row(
+      children: [
+        SizedBox(width: 10,),
+        LifeCounter(),
+        Expanded(child: SizedBox()),
+        LevelCounter(),
+        SizedBox(width: 10,),
+      ],
     );
   }
 }
 
 class LifeCounter extends StatelessWidget {
-  const LifeCounter(this.count, {super.key});
+  const LifeCounter({super.key});
 
-  final int count;
-
-  List<Widget> _build() {
+  List<Widget> _build(int count) {
     return List.generate(
       10, (index) => Container(
         width: 10,
@@ -42,12 +43,35 @@ class LifeCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(width: 10,),
-        ..._build(),
-      ],
+    return BlocSelector<PlayerBloc, PlayerState, int>(
+      selector: (state) => state.life,
+      builder: (context, count) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ..._build(count),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class LevelCounter extends StatelessWidget {
+  const LevelCounter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<PlayerBloc, PlayerState, int>(
+      selector: (state) => state.level, 
+      builder: (context, level) {
+        return Text(
+          'Level $level',
+          style: const TextStyle(
+            fontSize: 28
+          ),
+        );
+      }
     );
   }
 }
