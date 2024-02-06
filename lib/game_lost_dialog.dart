@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 class GameLostDialog extends StatelessWidget {
   const GameLostDialog({
     super.key,
@@ -30,6 +32,23 @@ class GameLostDialog extends StatelessWidget {
                 print("press........ PPPPPP");
               },
               child: const Text('Level selection'),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                print('11');
+                context.read<PlayerBloc>().add(PlayerRespwanEvent());
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Retry'),
+                  SizedBox(width: 10,),
+                  Icon(
+                    Icons.refresh,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -10,3 +10,13 @@ class PlayerUpdateDirectionEvent extends PlayerEvent {
   @override
   List<Object?> get props => [ direction ];
 }
+
+class PlayerRespwanEvent extends PlayerEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class PlayerStartEvent extends PlayerEvent {
+  @override
+  List<Object?> get props => [];
+}

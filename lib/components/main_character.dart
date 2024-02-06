@@ -41,6 +41,28 @@ enum BunnyState {
   }
 }
 
+class PlayerController extends Component with HasGameReference<NsRunner>, FlameBlocListenable<PlayerBloc, PlayerState> {
+  @override
+  bool listenWhen(PlayerState previousState, PlayerState newState) {
+    return previousState.status != newState.status;
+  }
+
+  @override
+  void onNewState(PlayerState state) {
+    if (state.status == GameStatus.respawn) {
+      game.overlays.remove('GG');
+      game.bloc.add(PlayerStartEvent());
+      parent?.add(game.player =  MainCharacter(
+            velocity : Vector2(0,0),
+            size: Vector2(60, 100),
+            game: game,
+            cornerRadius: const Radius.circular(ballRadius / 2),
+            position: Vector2(100, 100),
+          ));
+    }
+  }
+}
+
 class MainCharacter extends PositionComponent
     with CollisionCallbacks, DragCallbacks, HasGameReference<NsRunner>, FlameBlocListenable<PlayerBloc, PlayerState> {
   MainCharacter({
@@ -135,7 +157,6 @@ class MainCharacter extends PositionComponent
         }
       } else {
         print("End The Game");
-        game.overlays.add('GG');
       }
     } else if (other is NormalFloor) {
       if (other.position.y - intersectionPoints.first.y > 40) {
@@ -182,6 +203,11 @@ class MainCharacter extends PositionComponent
       position.y -= velocity.y * dt;
     } else {
       position.y += 300 * dt;
+    }
+
+    if (position.y > game.screenSize.height) {
+      game.overlays.add('GG');
+      removeFromParent();
     }
   }
 
