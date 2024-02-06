@@ -7,14 +7,14 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/config.dart';
 import 'package:game_failing_down/ns_runner.dart';
-import 'package:image/image.dart' as img;
+import 'package:game_failing_down/utility.dart';
+
 
 
 enum BunnyState {
@@ -92,24 +92,12 @@ class MainCharacter extends PositionComponent
   double floorPosition = 0.0;
   List<UI.Image> images = [];
   BunnyState? state;
-
   Direction direction = Direction.none;
-
-
-
-  Future<UI.Image> loadImage(String path) async {
-    ByteData data = await rootBundle.load(path);
-    Uint8List bytes = data.buffer.asUint8List();
-    img.Image? image = img.decodePng(bytes.buffer.asUint8List());
-    img.Image? resized = img.copyResize(image!, width: 60, height: 100);
-    Uint8List resizedByteData = img.encodePng(resized);
-    return await decodeImageFromList(resizedByteData);
-  }
 
   @override
   Future<void> onLoad() async {
     for (int i = 0; i < BunnyState.values.length; i++) {
-      images.add(await loadImage(BunnyState.getResFromIndex(i)));
+      images.add(await Utility.loadImage(BunnyState.getResFromIndex(i), const Size(60,100)));
     }
   }
 
