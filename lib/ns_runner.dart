@@ -15,6 +15,7 @@ import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/brick.dart';
 import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/main_character.dart';
+import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/ns_shaft_world.dart';
 
 import 'components/normal_floor.dart';
@@ -76,7 +77,9 @@ class NsRunner extends FlameGame<NSShaftWorld>
   FutureOr<void> onLoad() async {
     super.onLoad();
     camera.viewfinder.anchor = Anchor.topLeft;
+
     world.add(PlayArea());
+    world.add(Spikes(Vector2(0,0)));
     initFloor();
     createComponent(world);
 
@@ -97,7 +100,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
       ),
     );
 
-    debugMode = true;
+    debugMode = false;
   }
 
   @override

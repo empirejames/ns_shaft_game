@@ -66,16 +66,20 @@ class NormalFloor extends RectangleComponent
   UI.Image? image;
   @override
   Future<void> onLoad() async {
-    const String ground_grass = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_grass.png';
-    image = await Utility.loadImage(ground_grass,Size(width, height));
+    String imgSrc = "";
+    if(width ==100) {
+      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_grass.png';
+    } else if(width ==130) {
+      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_stone.png';
+    } else {
+      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_wood.png';
+    }
+    image = await Utility.loadImage(imgSrc,Size(width, height));
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    final paint = Paint()
-      ..color = const Color(0xff1e6091)
-      ..style = PaintingStyle.fill;
     canvas.drawImage(image!, Offset.zero, paint);
   }
 
