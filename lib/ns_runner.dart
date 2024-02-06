@@ -27,6 +27,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
   late double tileSize;
 
   final PlayerBloc bloc;
+  late MainCharacter player;
 
   NsRunner({required this.screenSize, required this.bloc,})
       : super(
@@ -61,8 +62,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
           ..scale(height / 4)));
   }
 
-
-
   // Add this variable
   double get width => size.x;
 
@@ -75,28 +74,22 @@ class NsRunner extends FlameGame<NSShaftWorld>
     world.add(PlayArea());
     initFloor();
     createComponent(world);
+
     await world.add(
       FlameBlocProvider<PlayerBloc, PlayerState>.value(
         value: bloc,
         children: [
-          MainCharacter(
+          player = MainCharacter(
             velocity : Vector2(0,0),
             size: Vector2(60, 100),
             game: this,
             cornerRadius: const Radius.circular(ballRadius / 2),
             position: Vector2(width / 2, height * 0.1),
           ),
+          PlayerController(),
         ],
       ),
-    );
-    // world.add(MainCharacter(
-    //     velocity : Vector2(0,0),
-    //     size: Vector2(60, 100),
-    //     game: this,
-    //     cornerRadius: const Radius.circular(ballRadius / 2),
-    //     position: Vector2(width / 2, height * 0.1))); // To here
-    // overlays.add(controlOverlay);
-    // overlays.add(infoOverlay);
+    );    
     debugMode = true;
   }
 
