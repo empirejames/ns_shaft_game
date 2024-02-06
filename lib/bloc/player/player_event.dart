@@ -25,3 +25,8 @@ class AddLevelEvent extends PlayerEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ReduceLifeEvent extends PlayerEvent {
+  @override
+  List<Object?> get props => [];
+}

@@ -3,6 +3,7 @@ import 'dart:ui' as UI;
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/ns_runner.dart';
 
 import '../config.dart';
@@ -45,6 +46,6 @@ class Spikes extends RectangleComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
     print("Touch the celing nails");
-
+    game.bloc.add(ReduceLifeEvent());
   }
 }
