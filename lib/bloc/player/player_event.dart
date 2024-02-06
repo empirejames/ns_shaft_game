@@ -20,3 +20,8 @@ class PlayerStartEvent extends PlayerEvent {
   @override
   List<Object?> get props => [];
 }
+
+class AddLevelEvent extends PlayerEvent {
+  @override
+  List<Object?> get props => [];
+}

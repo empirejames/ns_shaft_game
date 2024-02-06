@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/brick.dart';
+import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/ns_shaft_world.dart';
 
@@ -28,6 +29,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
 
   final PlayerBloc bloc;
   late MainCharacter player;
+  late LevelTimer levelTimer;
 
 
   NsRunner({required this.screenSize, required this.bloc,})
@@ -90,9 +92,11 @@ class NsRunner extends FlameGame<NSShaftWorld>
             position: Vector2(width / 2, height * 0.1),
           ),
           PlayerController(),
+          levelTimer = LevelTimer(game: this),
         ],
       ),
     );
+
     debugMode = true;
   }
 
