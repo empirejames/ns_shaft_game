@@ -11,6 +11,7 @@ import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
+import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/config.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/utility.dart';
@@ -136,28 +137,32 @@ class MainCharacter extends PositionComponent
 
   @override // Add from here...
   void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollisionStart(intersectionPoints, other);
+      Set<Vector2> rabit, PositionComponent other) {
+    super.onCollisionStart(rabit, other);
+
     if (other is PlayArea) {
-      if (intersectionPoints.first.y <= game.height ||
-          intersectionPoints.first.x >= game.width) {
-        if (intersectionPoints.first.x <= 0 || intersectionPoints.first.x >= game.width) {
-          print("AAAAA");
-        } else {
-          //debugPrint('removeFromParent');
-          //removeFromParent();
-        }
-      } else {
+
+      print("other x: ${rabit.first.x}  y: ${rabit.first.y}");
+
+
+      if (rabit.first.y >= game.height) {
         print("End The Game");
+      } else if (rabit.first.y <= 0 || rabit.first.x <= 0) {
+        print("Touch Celin ${rabit.first.x}  ...${rabit.first.y} ");
+        isStandOnFloor = false;
+        state = BunnyState.stand;
+      } else {
+        print("ELSE ....");
       }
     } else if (other is NormalFloor) {
-      if (other.position.y - intersectionPoints.first.y > 40) {
+      if (other.position.y - rabit.first.y > 40) {
         isStandOnFloor = true;
         state = BunnyState.stand;
         velocity.y = other.velocity.y;
       }
-
-      debugPrint('gggg collision with ${other.absolutePosition}');
+      //debugPrint('gggg collision with ${other.absolutePosition}');
+    }  else if (other is Spikes) {
+      debugPrint("BBAAAAAAVAVAV x : ${rabit.first.x } y : ${rabit.first.y}");
     } else {
       //debugPrint('collision with $positionComponent');
     }

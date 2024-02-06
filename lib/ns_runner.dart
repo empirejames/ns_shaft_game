@@ -79,7 +79,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
     camera.viewfinder.anchor = Anchor.topLeft;
 
     world.add(PlayArea());
-    world.add(Spikes(Vector2(0,0)));
+    world.add(Spikes(Vector2(0, 0)));
     initFloor();
     createComponent(world);
 

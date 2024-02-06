@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/ns_runner.dart';
-
-import '../asset_path.dart';
 import '../config.dart';
 import '../utility.dart';
 import 'dart:ui' as UI;
