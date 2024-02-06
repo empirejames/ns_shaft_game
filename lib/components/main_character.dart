@@ -7,9 +7,11 @@ import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
+import 'package:game_failing_down/config.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:image/image.dart' as img;
 
@@ -64,6 +66,8 @@ class MainCharacter extends PositionComponent
   double floorPosition = 0.0;
   List<UI.Image> images = [];
   BunnyState? state;
+
+  Direction direction = Direction.none;
 
 
 
@@ -157,7 +161,7 @@ class MainCharacter extends PositionComponent
 
   @override
   void onNewState(PlayerState state) {
-    print('current state $state');
+    direction = state.direction;
   }
 
   final Vector2 velocity;
@@ -165,6 +169,15 @@ class MainCharacter extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
+    switch (direction) {
+      case Direction.left:
+        moveBy(-batStep);
+        break;
+      case Direction.right:
+        moveBy(batStep);
+        break;
+      default:
+    }
     if (isStandOnFloor) {
       position.y -= velocity.y * dt;
     } else {

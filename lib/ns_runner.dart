@@ -83,8 +83,8 @@ class NsRunner extends FlameGame<NSShaftWorld>
     //     game: this,
     //     cornerRadius: const Radius.circular(ballRadius / 2),
     //     position: Vector2(width / 2, height * 0.1))); // To here
-    overlays.add(controlOverlay);
-    overlays.add(infoOverlay);
+    // overlays.add(controlOverlay);
+    // overlays.add(infoOverlay);
     debugMode = true;
   }
 
