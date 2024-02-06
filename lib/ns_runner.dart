@@ -7,9 +7,11 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/brick.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/ns_shaft_world.dart';
@@ -24,7 +26,9 @@ class NsRunner extends FlameGame<NSShaftWorld>
   late Size screenSize;
   late double tileSize;
 
-  NsRunner({required this.screenSize})
+  final PlayerBloc bloc;
+
+  NsRunner({required this.screenSize, required this.bloc,})
       : super(
           world: NSShaftWorld(screenSize),
           camera: CameraComponent.withFixedResolution(
@@ -59,12 +63,28 @@ class NsRunner extends FlameGame<NSShaftWorld>
     camera.viewfinder.anchor = Anchor.topLeft;
     world.add(PlayArea());
     createComponent(world);
-    world.add(MainCharacter(
-        velocity : Vector2(0,0),
-        size: Vector2(60, 100),
-        cornerRadius: const Radius.circular(ballRadius / 2),
-        position: Vector2(width / 2, height * 0.1))); // To here
+    await world.add(
+      FlameBlocProvider<PlayerBloc, PlayerState>.value(
+        value: bloc,
+        children: [
+          MainCharacter(
+            velocity : Vector2(0,0),
+            size: Vector2(60, 100),
+            game: this,
+            cornerRadius: const Radius.circular(ballRadius / 2),
+            position: Vector2(width / 2, height * 0.1),
+          ),
+        ],
+      ),
+    );
+    // world.add(MainCharacter(
+    //     velocity : Vector2(0,0),
+    //     size: Vector2(60, 100),
+    //     game: this,
+    //     cornerRadius: const Radius.circular(ballRadius / 2),
+    //     position: Vector2(width / 2, height * 0.1))); // To here
     overlays.add(controlOverlay);
+    overlays.add(infoOverlay);
     debugMode = true;
   }
 
