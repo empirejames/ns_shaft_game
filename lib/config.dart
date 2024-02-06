@@ -26,3 +26,4 @@ final brickWidth =
 const brickHeight = gameHeight * 0.03;
 const difficultyModifier = 1.03;       
 const String controlOverlay = 'ControlOverlay';
+const String infoOverlay = 'InfoOverlay';

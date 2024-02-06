@@ -4,8 +4,10 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/ns_runner.dart';
@@ -38,10 +40,11 @@ enum BunnyState {
 }
 
 class MainCharacter extends PositionComponent
-    with CollisionCallbacks, DragCallbacks, HasGameReference<NsRunner> {
+    with CollisionCallbacks, DragCallbacks, HasGameReference<NsRunner>, FlameBlocListenable<PlayerBloc, PlayerState> {
   MainCharacter({
     required this.velocity,
     required this.cornerRadius,
+    required this.game,
     required super.position,
     required super.size,
   }) : super(
@@ -50,6 +53,8 @@ class MainCharacter extends PositionComponent
         );
 
   final Radius cornerRadius;
+
+  final NsRunner game;
 
   final _paint = Paint()
     ..color = const Color(0xff1e6091)
@@ -125,8 +130,8 @@ class MainCharacter extends PositionComponent
           //removeFromParent();
         }
       } else {
-
         print("End The Game");
+        game.overlays.add('GG');
       }
     } else if (other is NormalFloor) {
       if (other.position.y - intersectionPoints.first.y > 40) {
@@ -148,6 +153,11 @@ class MainCharacter extends PositionComponent
       isStandOnFloor = false;
       velocity.y = 150;
     }
+  }
+
+  @override
+  void onNewState(PlayerState state) {
+    print('current state $state');
   }
 
   final Vector2 velocity;
