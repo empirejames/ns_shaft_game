@@ -28,7 +28,7 @@ void main() {
                 game: nsGame,
                 overlayBuilderMap: {
                   "GG": (BuildContext context, NsRunner game) {
-                    return GameLostDialog();
+                    return GameLostDialog(game);
                   },
                 },
               ),

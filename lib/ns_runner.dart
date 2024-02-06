@@ -29,6 +29,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
   final PlayerBloc bloc;
   late MainCharacter player;
 
+
   NsRunner({required this.screenSize, required this.bloc,})
       : super(
           world: NSShaftWorld(screenSize),
@@ -51,16 +52,18 @@ class NsRunner extends FlameGame<NSShaftWorld>
     });
   }
 
-  initFloor() {
+  initFloor() async {
     double level = 100;
     Vector2 position = Vector2(screenSize.width / 2, screenSize.height);
     Vector2 speed = Vector2(level, level);
-    world.add(NormalFloor(
+    await world.add(NormalFloor(
         radius: ballRadius,
         position: position,
         velocity: speed.normalized()
           ..scale(height / 4)));
   }
+
+
 
   // Add this variable
   double get width => size.x;
@@ -89,7 +92,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
           PlayerController(),
         ],
       ),
-    );    
+    );
     debugMode = true;
   }
 
@@ -102,7 +105,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
     } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
       world.children.query<MainCharacter>().first.moveBy(batStep);
     }
-
     return KeyEventResult.handled;
   }
 
