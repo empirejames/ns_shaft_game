@@ -82,7 +82,6 @@ class MainCharacter extends PositionComponent
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    print("render ..... $state");
     switch(state) {
       case BunnyState.hurt :
         canvas.drawImage(images[0], Offset.zero, _paint);
@@ -126,13 +125,17 @@ class MainCharacter extends PositionComponent
           //removeFromParent();
         }
       } else {
+
         print("End The Game");
       }
     } else if (other is NormalFloor) {
-      isStandOnFloor = true;
-      state = BunnyState.stand;
-      velocity.y = other.velocity.y;
-      debugPrint('gggg collision with $other');
+      if (other.position.y - intersectionPoints.first.y > 40) {
+        isStandOnFloor = true;
+        state = BunnyState.stand;
+        velocity.y = other.velocity.y;
+      }
+
+      debugPrint('gggg collision with ${other.absolutePosition}');
     } else {
       //debugPrint('collision with $positionComponent');
     }
@@ -155,7 +158,7 @@ class MainCharacter extends PositionComponent
     if (isStandOnFloor) {
       position.y -= velocity.y * dt;
     } else {
-      position.y += 100 * dt;
+      position.y += 300 * dt;
     }
   }
 
@@ -167,7 +170,6 @@ class MainCharacter extends PositionComponent
   }
 
   void moveBy(double dx) {
-    print("dx ${dx}");
     if(dx < 0) {
       state = BunnyState.walkLeft;
     } else {
