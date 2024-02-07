@@ -149,6 +149,7 @@ class MainCharacter extends PositionComponent
         print("End The Game");
       } else if (rabit.first.y <= 0 || rabit.first.x <= 0) {
         print("Touch Celin ${rabit.first.x}  ...${rabit.first.y} ");
+        game.bloc.add(ReduceLifeEvent());
         isStandOnFloor = false;
         state = BunnyState.stand;
       } else {

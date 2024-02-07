@@ -25,12 +25,12 @@ class LifeCounter extends StatelessWidget {
 
   List<Widget> _build(int count) {
     return List.generate(
-      10, (index) => Container(
-        width: 10,
-        height: 20,
-        margin: const EdgeInsets.symmetric(horizontal: 1),
+      6, (index) => Container(
+        width: 15,
+        height: 25,
+        margin: const EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
-          color: index < count ? Colors.blue : Colors.transparent,
+          color: index < count ? Colors.red : Colors.transparent,
           border: Border.all(
             color: Colors.grey,
             width: 3,
@@ -49,6 +49,12 @@ class LifeCounter extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+                "HP : ", style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 25
+            )),
             ..._build(count),
           ],
         );
@@ -68,7 +74,9 @@ class LevelCounter extends StatelessWidget {
         return Text(
           'Level $level',
           style: const TextStyle(
-            fontSize: 28
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            fontSize: 25
           ),
         );
       }

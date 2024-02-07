@@ -27,13 +27,11 @@ class NsRunner extends FlameGame<NSShaftWorld>
     with HasCollisionDetection, KeyboardEvents {
   late Size screenSize;
   late double tileSize;
-
   final PlayerBloc bloc;
   late MainCharacter player;
   late LevelTimer levelTimer;
 
-
-  NsRunner({required this.screenSize, required this.bloc,})
+  NsRunner({required this.screenSize, required this.bloc})
       : super(
           world: NSShaftWorld(screenSize),
           camera: CameraComponent.withFixedResolution(
@@ -59,7 +57,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
     double level = 100;
     Vector2 position = Vector2(screenSize.width / 2, screenSize.height);
     Vector2 speed = Vector2(level, level);
-    await world.add(NormalFloor(
+    await world.add(NormalFloor.small(
         radius: ballRadius,
         position: position,
         velocity: speed.normalized()
@@ -70,14 +68,12 @@ class NsRunner extends FlameGame<NSShaftWorld>
 
   // Add this variable
   double get width => size.x;
-
   double get height => size.y;
 
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
     camera.viewfinder.anchor = Anchor.topLeft;
-
     world.add(PlayArea());
     world.add(Spikes(Vector2(0, 0)));
     initFloor();
@@ -99,7 +95,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
         ],
       ),
     );
-
     debugMode = false;
   }
 
@@ -113,20 +108,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
       world.children.query<MainCharacter>().first.moveBy(batStep);
     }
     return KeyEventResult.handled;
-  }
-
-  Component creakBrick(world) {
-    Random random = Random();
-    double randHeight = screenSize.height;
-    double randWidth = random.nextDouble() * screenSize.width;
-
-    return Brick(
-      Vector2(
-        brickWidth + brickGutter,
-        brickHeight + brickGutter,
-      ),
-      Colors.black,
-    );
   }
 
   void resize(Size size) {

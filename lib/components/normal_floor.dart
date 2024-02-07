@@ -31,16 +31,25 @@ class NormalFloor extends RectangleComponent
   NormalFloor.wide({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(130, 50),
       anchor: Anchor.bottomCenter,
+      paint: Paint()
+        ..color = const Color(0xfff2e8cf)
+        ..style = PaintingStyle.fill,
       children: [RectangleHitbox()]
   );
   NormalFloor.small({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(100, 50),
       anchor: Anchor.bottomCenter,
+      paint: Paint()
+        ..color = const Color(0xfff2e8cf)
+        ..style = PaintingStyle.fill,
       children: [RectangleHitbox()]
   );
   NormalFloor.tall({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(160, 50),
       anchor: Anchor.bottomCenter,
+      paint: Paint()
+        ..color = const Color(0xfff2e8cf)
+        ..style = PaintingStyle.fill,
       children: [RectangleHitbox()]
   );
 

@@ -45,7 +45,5 @@ class Spikes extends RectangleComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
-    print("Touch the celing nails");
-    game.bloc.add(ReduceLifeEvent());
   }
 }

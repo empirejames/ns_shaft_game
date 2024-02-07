@@ -16,7 +16,7 @@ class GameLostDialog extends StatelessWidget {
     return Center(
       child: Container(
         width: 300,
-        height: 250,
+        height: 300,
 
         decoration: const BoxDecoration(
           color: Colors.black12,
@@ -25,6 +25,11 @@ class GameLostDialog extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+        const Image(
+          width: 80,
+            height: 80,
+            image: AssetImage('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png')
+        ),
             const Text(
               'Game Over',
               style: TextStyle(
@@ -35,10 +40,10 @@ class GameLostDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'You completed level ${1} in 10 seconds.',
+            Text(
+              'You completed level ${game.bloc.state.level}.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 20,
               ),
