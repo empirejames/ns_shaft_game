@@ -25,24 +25,21 @@ import 'dart:async' as Time;
 
 class NsRunner extends FlameGame<NSShaftWorld>
     with HasCollisionDetection, KeyboardEvents {
-  late Size screenSize;
   late double tileSize;
   final PlayerBloc bloc;
   late MainCharacter player;
   late LevelTimer levelTimer;
 
-  NsRunner({required this.screenSize, required this.bloc})
-      : super(
-          world: NSShaftWorld(screenSize),
-          camera: CameraComponent.withFixedResolution(
-              width: screenSize.width, height: screenSize.height),
-        );
+  Size get getScreenSize => world.screenSize;
 
-  createComponent(World world) {
+  NsRunner({required this.bloc})
+      : super(world: NSShaftWorld());
+
+  createComponent(NSShaftWorld world) {
     Time.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       double level = 100;
-      double x = math.Random().nextDouble() * screenSize.width;
-      double y = screenSize.height;
+      double x = math.Random().nextDouble() * world.screenSize.width;
+      double y = world.screenSize.height;
       Vector2 position = Vector2(x, y);
       Vector2 speed = Vector2(level, level);
       world.add(NormalFloor.random(
@@ -53,15 +50,17 @@ class NsRunner extends FlameGame<NSShaftWorld>
     });
   }
 
-  initFloor() async {
-    double level = 100;
-    Vector2 position = Vector2(screenSize.width / 2, screenSize.height);
-    Vector2 speed = Vector2(level, level);
-    await world.add(NormalFloor.small(
-        radius: ballRadius,
-        position: position,
-        velocity: speed.normalized()
-          ..scale(height / 4)));
+  initFloor () {
+    Future.delayed(const Duration(milliseconds: 200)).then((value) {
+      double level = 100;
+      Vector2 position = Vector2(world.screenSize.width / 2, world.screenSize.height);
+      Vector2 speed = Vector2(level, level);
+      world.add(NormalFloor.small(
+          radius: ballRadius,
+          position: position,
+          velocity: speed.normalized()
+            ..scale(height / 4)));
+    });
   }
 
 
@@ -111,7 +110,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
   }
 
   void resize(Size size) {
-    screenSize = size;
-    tileSize = screenSize.width / 9;
+    world.screenSize = size;
+    tileSize = world.screenSize.width / 9;
   }
 }

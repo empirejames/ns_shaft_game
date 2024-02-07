@@ -3,14 +3,15 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:game_failing_down/utility.dart';
 
 class NSShaftWorld extends World with TapCallbacks, HasGameReference {
-  NSShaftWorld(this.screenSize, {
+  NSShaftWorld({
     Random? random,
   }) : _random = random ?? Random();
 
   final Random _random;
-  final Size screenSize;
+  Size screenSize = const Size(0, 0);
   final double level = 1;
   late double speed = 200 + (level * 200);
   late final double groundLevel = (screenSize.height / 2) - (screenSize.height / 5);
@@ -21,6 +22,6 @@ class NSShaftWorld extends World with TapCallbacks, HasGameReference {
 
   @override
   Future<void> onLoad() async {
-
+    screenSize = Utility.getScreenDensity();
   }
 }

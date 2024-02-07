@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,9 @@ import 'ns_runner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Size size = Utility.getScreenDensity();
+  await Flame.device.fullScreen();
   final PlayerBloc bloc = PlayerBloc();
-  NsRunner nsGame = NsRunner(screenSize: size, bloc: bloc);
+  NsRunner nsGame = NsRunner(bloc: bloc);
   runApp(
     BlocProvider.value(
       value: bloc,
@@ -36,7 +37,7 @@ void main() async {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 50),
+                        SizedBox(height: 70),
                         InfoOverlay(),
                       ],
                     ),

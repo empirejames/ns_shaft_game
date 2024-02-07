@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 
 class Utility {
 
-  static Size getScreenDensity (){
+  static Size getScreenDensity () {
     FlutterView view = WidgetsBinding.instance.platformDispatcher.views.first;
     return view.physicalSize / view.devicePixelRatio;
   }

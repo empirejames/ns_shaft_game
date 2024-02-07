@@ -203,7 +203,7 @@ class MainCharacter extends PositionComponent
       position.y += 300 * dt;
     }
 
-    if (position.y > game.screenSize.height) {
+    if (position.y > game.height) {
       game.overlays.add('GG');
       game.levelTimer.removeFromParent();
       removeFromParent();

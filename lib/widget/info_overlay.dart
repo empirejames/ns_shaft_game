@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 
+import '../config.dart';
+
 class InfoOverlay extends StatelessWidget {
   const InfoOverlay({super.key});
   
@@ -25,7 +27,7 @@ class LifeCounter extends StatelessWidget {
 
   List<Widget> _build(int count) {
     return List.generate(
-      6, (index) => Container(
+        gameLife, (index) => Container(
         width: 15,
         height: 25,
         margin: const EdgeInsets.symmetric(horizontal: 2),

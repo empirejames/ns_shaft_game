@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_failing_down/config.dart';
 
 part 'player_event.dart';
 part 'player_state.dart';
@@ -26,7 +27,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   _respwan(_, Emitter<PlayerState> emit) {
-    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn, level: 1, life: 10));
+    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn, level: 1, life: gameLife));
   }
 
   _startGame(_, Emitter<PlayerState> emit) {
