@@ -5,12 +5,12 @@ import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/ns_runner.dart';
 
 import '../config.dart';
-import 'normal_floor.dart';
+import 'floors/normal_floor.dart';
 
 class Brick extends RectangleComponent
     with CollisionCallbacks, HasGameReference<NsRunner> {
-  Brick(Vector2 position, Color color)
-      : super(
+
+  Brick(Vector2 position, Color color) : super(
     position: position,
     size: Vector2(brickWidth, brickHeight),
     anchor: Anchor.center,

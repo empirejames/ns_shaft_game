@@ -7,10 +7,9 @@ import 'package:game_failing_down/ns_runner.dart';
 
 
 class PlayArea extends RectangleComponent with HasGameReference<NsRunner> {
-  PlayArea()
-      : super(
+  PlayArea() : super(
     paint: Paint()..color = const Color(0xfff2e8cf),
-    children: [RectangleHitbox()],
+    children: [ RectangleHitbox() ],
   );
 
   @override

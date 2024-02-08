@@ -9,14 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/components/level_timer.dart';
-import 'package:game_failing_down/components/normal_floor.dart';
+import 'package:game_failing_down/components/floors/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/config.dart';
 import 'package:game_failing_down/ns_runner.dart';
-import 'package:game_failing_down/utility.dart';
-
-
+import 'package:game_failing_down/core/utilities/utility.dart';
+import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
 
 enum BunnyState {
   hurt('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png'),
@@ -25,10 +24,10 @@ enum BunnyState {
   ready('assets/images/kenney_jumper_pack/PNG/Players/bunny1_ready.png'),
   stand('assets/images/kenney_jumper_pack/PNG/Players/bunny1_stand.png');
 
+  const BunnyState(this.path);
+
   final String path;
 
-  const BunnyState(this.path);
-  
   static String getResFromIndex (int index){
     return BunnyState.values[index].path;
   }
@@ -52,10 +51,10 @@ class PlayerController extends Component with HasGameReference<NsRunner>, FlameB
   @override
   void onNewState(PlayerState state) {
     if (state.status == GameStatus.respawn) {
-      game.overlays.remove('GG');
+      game.overlays.remove(GameLostDialog.overlayKey);
       game.bloc.add(PlayerStartEvent());
       parent?.addAll([
-        game.player =  MainCharacter(
+        game.player = MainCharacter(
           velocity : Vector2(0,0),
           size: Vector2(60, 100),
           game: game,
@@ -77,12 +76,13 @@ class MainCharacter extends PositionComponent
     required super.position,
     required super.size,
   }) : super(
-          anchor: Anchor.center,
-          children: [RectangleHitbox()],
-        );
+    anchor: Anchor.center,
+    children: [RectangleHitbox()],
+  );
 
   final Radius cornerRadius;
 
+  @override
   final NsRunner game;
 
   final _paint = Paint()
@@ -101,7 +101,6 @@ class MainCharacter extends PositionComponent
       images.add(await Utility.loadImage(BunnyState.getResFromIndex(i), const Size(60,100)));
     }
   }
-
 
   @override
   void render(Canvas canvas) {
@@ -141,14 +140,12 @@ class MainCharacter extends PositionComponent
     super.onCollisionStart(rabit, other);
 
     if (other is PlayArea) {
-
       print("other x: ${rabit.first.x}  y: ${rabit.first.y}");
-
 
       if (rabit.first.y >= game.height) {
         print("End The Game");
       } else if (rabit.first.y <= 0 || rabit.first.x <= 0) {
-        print("Touch Celin ${rabit.first.x}  ...${rabit.first.y} ");
+        print("Touch ceiling ${rabit.first.x}  ...${rabit.first.y} ");
         game.bloc.add(ReduceLifeEvent());
         isStandOnFloor = false;
         state = BunnyState.stand;
@@ -204,7 +201,7 @@ class MainCharacter extends PositionComponent
     }
 
     if (position.y > game.height) {
-      game.overlays.add('GG');
+      game.overlays.add(GameLostDialog.overlayKey);
       game.levelTimer.removeFromParent();
       removeFromParent();
     }

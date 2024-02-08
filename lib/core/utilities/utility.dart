@@ -1,6 +1,6 @@
-import 'dart:typed_data';
 import 'dart:ui';
-import 'dart:ui' as UI;
+import 'dart:ui' as ui;
+
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,7 @@ class Utility {
     return view.physicalSize / view.devicePixelRatio;
   }
 
-  static Future<UI.Image> loadImage(String path, Size size) async {
+  static Future<ui.Image> loadImage(String path, Size size) async {
     ByteData data = await rootBundle.load(path);
     Uint8List bytes = data.buffer.asUint8List();
     img.Image? image = img.decodePng(bytes.buffer.asUint8List());

@@ -7,14 +7,13 @@ import '../config.dart';
 class InfoOverlay extends StatelessWidget {
   const InfoOverlay({super.key});
   
-
   @override
   Widget build(BuildContext context) {
     return const Row(
       children: [
         SizedBox(width: 10,),
         LifeCounter(),
-        Expanded(child: SizedBox()),
+        Spacer(),
         LevelCounter(),
         SizedBox(width: 10,),
       ],
@@ -52,10 +51,10 @@ class LifeCounter extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-                "HP : ", style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-                fontSize: 25
+              'HP : ', style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+              fontSize: 25,
             )),
             ..._build(count),
           ],
@@ -76,9 +75,9 @@ class LevelCounter extends StatelessWidget {
         return Text(
           'Level $level',
           style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            fontSize: 25
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+            fontSize: 25,
           ),
         );
       }

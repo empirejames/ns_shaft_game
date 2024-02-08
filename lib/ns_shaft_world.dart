@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:game_failing_down/utility.dart';
+import 'package:game_failing_down/core/utilities/utility.dart';
 
 class NSShaftWorld extends World with TapCallbacks, HasGameReference {
   NSShaftWorld({

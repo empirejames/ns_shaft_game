@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
-import 'package:game_failing_down/components/main_character.dart';
-import 'package:game_failing_down/config.dart';
-import 'package:game_failing_down/ns_shaft_world.dart';
 
 class ControlOverlay extends StatefulWidget {
   const ControlOverlay({
@@ -17,8 +12,8 @@ class ControlOverlay extends StatefulWidget {
 }
 
 class _ControlOverlayState extends State<ControlOverlay> {
-  bool shouldStopLeft = false;
-  bool shouldStopRight = false;
+  bool _shouldStopLeft = false;
+  bool _shouldStopRight = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +26,16 @@ class _ControlOverlayState extends State<ControlOverlay> {
             behavior: HitTestBehavior.translucent,
             onTapDown: (_) {
               context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.left));
-              shouldStopLeft = true;
-              shouldStopRight = false;
+              _shouldStopLeft = true;
+              _shouldStopRight = false;
             },
             onTapUp: (_) {
-              if (shouldStopLeft) {
-                shouldStopLeft = false;
+              if (_shouldStopLeft) {
+                _shouldStopLeft = false;
                 context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
               }
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_left,
               color: Colors.white,
               size: 100,
@@ -54,16 +49,16 @@ class _ControlOverlayState extends State<ControlOverlay> {
             behavior: HitTestBehavior.translucent,
             onTapDown: (_) {
               context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.right));
-              shouldStopRight = true;
-              shouldStopLeft = false;
+              _shouldStopRight = true;
+              _shouldStopLeft = false;
             },
             onTapUp: (_) {
-              if (shouldStopRight) {
+              if (_shouldStopRight) {
                 context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
-                shouldStopRight = false;
+                _shouldStopRight = false;
               }
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_right,
               color: Colors.white,
               size: 100,

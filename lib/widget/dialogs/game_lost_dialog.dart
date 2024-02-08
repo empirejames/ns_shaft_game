@@ -1,15 +1,19 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_failing_down/ns_runner.dart';
 
-import 'bloc/player/player_bloc.dart';
-class GameLostDialog extends StatelessWidget {
+import '../../bloc/player/player_bloc.dart';
 
-  final NsRunner game;
+class GameLostDialog extends StatelessWidget {
   const GameLostDialog(this.game, {
     super.key,
   });
 
+  final NsRunner game;
+
+  /// For [GameWidget.overlayBuilderMap]
+  static const String overlayKey = 'game-lost-dialog-key';
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +29,11 @@ class GameLostDialog extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        const Image(
-          width: 80,
-            height: 80,
-            image: AssetImage('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png')
-        ),
+            const Image(
+              width: 80,
+              height: 80,
+              image: AssetImage('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png'),
+            ),
             const Text(
               'Game Over',
               style: TextStyle(
@@ -58,11 +62,13 @@ class GameLostDialog extends StatelessWidget {
                 backgroundColor: Colors.amberAccent,
                 padding: const EdgeInsets.all(15),
               ),
-              child: const Text("Play again",
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-              )),
+              child: const Text(
+                'Play again',
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 20,
+                ),
+              ),
             ),
           ],
         ),

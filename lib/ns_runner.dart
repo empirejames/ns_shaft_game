@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:math';
-import 'dart:ui';
 
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -12,16 +10,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
-import 'package:game_failing_down/components/brick.dart';
 import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/ns_shaft_world.dart';
 
-import 'components/normal_floor.dart';
+import 'components/floors/normal_floor.dart';
 import 'components/play_area.dart';
 import 'config.dart';
-import 'dart:async' as Time;
+import 'dart:async' as async_pkg;
 
 class NsRunner extends FlameGame<NSShaftWorld>
     with HasCollisionDetection, KeyboardEvents {
@@ -32,11 +29,12 @@ class NsRunner extends FlameGame<NSShaftWorld>
 
   Size get getScreenSize => world.screenSize;
 
-  NsRunner({required this.bloc})
-      : super(world: NSShaftWorld());
+  NsRunner({
+    required this.bloc,
+  }) : super(world: NSShaftWorld());
 
   createComponent(NSShaftWorld world) {
-    Time.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+    async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       double level = 100;
       double x = math.Random().nextDouble() * world.screenSize.width;
       double y = world.screenSize.height;
@@ -62,8 +60,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
             ..scale(height / 4)));
     });
   }
-
-
 
   // Add this variable
   double get width => size.x;
@@ -94,18 +90,29 @@ class NsRunner extends FlameGame<NSShaftWorld>
         ],
       ),
     );
-    debugMode = false;
+    debugMode = true;
   }
 
   @override
-  KeyEventResult onKeyEvent(
-      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  KeyEventResult onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     super.onKeyEvent(event, keysPressed);
-    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      world.children.query<MainCharacter>().first.moveBy(-batStep);
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-      world.children.query<MainCharacter>().first.moveBy(batStep);
+
+    // final playerBloc = world.children.query<FlameBlocProvider<PlayerBloc, PlayerState>>().firstOrNull;
+    // if (playerBloc == null) {
+    //   return KeyEventResult.skipRemainingHandlers;
+    // }
+
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowLeft:
+        player.moveBy(-batStep);
+        break;
+      case LogicalKeyboardKey.arrowRight:
+        player.moveBy(batStep);
+        break;
+      default:
+        return KeyEventResult.skipRemainingHandlers;
     }
+
     return KeyEventResult.handled;
   }
 

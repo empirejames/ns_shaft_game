@@ -7,8 +7,8 @@ import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/ns_runner.dart';
 
 import '../config.dart';
-import '../utility.dart';
-import 'normal_floor.dart';
+import '../core/utilities/utility.dart';
+import 'floors/normal_floor.dart';
 
 class Spikes extends RectangleComponent
     with CollisionCallbacks, HasGameReference<NsRunner> {
