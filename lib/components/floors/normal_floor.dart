@@ -5,6 +5,7 @@ import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/components/play_area.dart';
+import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import '../../config.dart';
 import '../../core/utilities/utility.dart';
@@ -94,21 +95,8 @@ class NormalFloor extends RectangleComponent
   void update(double dt) {
     super.update(dt);
     position.y -= velocity.y * dt;
-  }
-
-  @override // Add from here...
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollisionStart(intersectionPoints, other);
-    if (other is PlayArea) {
-      if (intersectionPoints.first.y == 0) {
-        // collision the ceiling
-        removeFromParent();
-      }
-    } else if (other is MainCharacter) {
-      //debugPrint('ccccccc ollision with $other');
-    } else {
-      //debugPrint('collision with $other');
+    if (position.y < -100) {
+      removeFromParent();
     }
   }
 }

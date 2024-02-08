@@ -18,6 +18,8 @@ import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/core/utilities/utility.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
 
+const _playerSize = Size(60, 100);
+
 enum BunnyState {
   hurt('assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png'),
   walkRight('assets/images/kenney_jumper_pack/PNG/Players/bunny1_walk_right1.png'),
@@ -39,7 +41,7 @@ enum BunnyState {
         return s.path;
       }
     }
-    return "";
+    return '';
   }
 }
 
@@ -57,7 +59,7 @@ class PlayerController extends Component with HasGameReference<NsRunner>, FlameB
       parent?.addAll([
         game.player = MainCharacter(
           velocity : Vector2(0,0),
-          size: Vector2(60, 100),
+          size: Vector2(_playerSize.width, _playerSize.height),
           game: game,
           cornerRadius: const Radius.circular(ballRadius / 2),
           position: Vector2(100, 100),
@@ -81,6 +83,9 @@ class MainCharacter extends PositionComponent
     children: [RectangleHitbox()],
   );
 
+  static const playerSize = _playerSize;
+  static final playerVecSize = Vector2(_playerSize.width, _playerSize.height);
+
   final Radius cornerRadius;
 
   @override
@@ -99,7 +104,7 @@ class MainCharacter extends PositionComponent
   @override
   Future<void> onLoad() async {
     for (int i = 0; i < BunnyState.values.length; i++) {
-      images.add(await Utility.loadImage(BunnyState.getResFromIndex(i), const Size(60,100)));
+      images.add(await Utility.loadImage(BunnyState.getResFromIndex(i), _playerSize));
     }
   }
 
@@ -136,34 +141,32 @@ class MainCharacter extends PositionComponent
   }
 
   @override // Add from here...
-  void onCollisionStart(
-      Set<Vector2> rabit, PositionComponent other) {
-    super.onCollisionStart(rabit, other);
+  void onCollisionStart(Set<Vector2> rabbits, PositionComponent other) {
+    super.onCollisionStart(rabbits, other);
+    final rabbit = rabbits.first;
 
     if (other is PlayArea) {
-      print("other x: ${rabit.first.x}  y: ${rabit.first.y}");
+      print("other x: ${rabbits.first.x}  y: ${rabbits.first.y}");
 
-      if (rabit.first.y >= game.height) {
-        NsLogger.gameStatus('Game end');
-      } else if (rabit.first.y <= 0 || rabit.first.x <= 0) {
-        NsLogger.collision('Touch ceiling, pos: (${rabit.first.x}, ${rabit.first.y})');
+      if (rabbit.y >= game.height) {
+        NsLogger.gameStatus('Game end, because rabbit is out of the screen');
+      } else if (rabbit.y <= 0) {
+        NsLogger.collision('Touch ceiling, pos: (${rabbit.x}, ${rabbit.y})');
         game.bloc.add(ReduceLifeEvent());
         isStandOnFloor = false;
         state = BunnyState.stand;
-      } else {
-        print("ELSE ....");
       }
     } else if (other is NormalFloor) {
-      if (other.position.y - rabit.first.y > 40) {
+      if (other.position.y - rabbit.y > 40) {
+        NsLogger.collision('Touch normal floor, pos: (${rabbit.x}, ${rabbit.y})');
         isStandOnFloor = true;
         state = BunnyState.stand;
         velocity.y = other.velocity.y;
       }
-      //debugPrint('gggg collision with ${other.absolutePosition}');
     }  else if (other is Spikes) {
-      debugPrint("BBAAAAAAVAVAV x : ${rabit.first.x } y : ${rabit.first.y}");
+      NsLogger.collision('Touch spikes, pos: (${rabbit.x}, ${rabbit.y})');
     } else {
-      //debugPrint('collision with $positionComponent');
+      debugPrint('collision with $other');
     }
   }
 

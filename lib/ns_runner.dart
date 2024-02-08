@@ -80,7 +80,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
         children: [
           player = MainCharacter(
             velocity : Vector2(0,0),
-            size: Vector2(60, 100),
+            size: MainCharacter.playerVecSize,
             game: this,
             cornerRadius: const Radius.circular(ballRadius / 2),
             position: Vector2(width / 2, height * 0.1),
