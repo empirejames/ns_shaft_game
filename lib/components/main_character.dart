@@ -13,6 +13,7 @@ import 'package:game_failing_down/components/floors/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/config.dart';
+import 'package:game_failing_down/core/utilities/utilities.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/core/utilities/utility.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
@@ -143,9 +144,9 @@ class MainCharacter extends PositionComponent
       print("other x: ${rabit.first.x}  y: ${rabit.first.y}");
 
       if (rabit.first.y >= game.height) {
-        print("End The Game");
+        NsLogger.gameStatus('Game end');
       } else if (rabit.first.y <= 0 || rabit.first.x <= 0) {
-        print("Touch ceiling ${rabit.first.x}  ...${rabit.first.y} ");
+        NsLogger.collision('Touch ceiling, pos: (${rabit.first.x}, ${rabit.first.y})');
         game.bloc.add(ReduceLifeEvent());
         isStandOnFloor = false;
         state = BunnyState.stand;
