@@ -146,8 +146,6 @@ class MainCharacter extends PositionComponent
     final rabbit = rabbits.first;
 
     if (other is PlayArea) {
-      print("other x: ${rabbits.first.x}  y: ${rabbits.first.y}");
-
       if (rabbit.y >= game.height) {
         NsLogger.gameStatus('Game end, because rabbit is out of the screen');
       } else if (rabbit.y <= 0) {
@@ -219,17 +217,32 @@ class MainCharacter extends PositionComponent
   }
 
   void moveBy(double dx) {
-    if(dx < 0) {
-      state = BunnyState.walkLeft;
+    final moveLowerBound = width / 2;
+    final moveUpperBound = game.width - width / 2;
+
+    final double dstX = position.x + dx;
+    final double resolvedDstX = dstX.clamp(moveLowerBound, moveUpperBound);
+    final onEdgeOrOverflow = dstX <= moveLowerBound || dstX >= moveUpperBound;
+    double resolvedOffsetX = dx;
+    const baseDuration = 0.01;
+    double duration = baseDuration;
+
+    if (onEdgeOrOverflow) {
+      state = BunnyState.stand;
+      resolvedOffsetX = resolvedDstX - position.x;
+      duration = (resolvedOffsetX / dx * baseDuration).clamp(0, 999);
     } else {
-      state = BunnyState.walkRight;
+      state = dx < 0 ? BunnyState.walkLeft : BunnyState.walkRight;
     }
-    add(MoveToEffect(
-      Vector2(
-        (position.x + dx).clamp(width / 2, game.width - width / 2),
-        position.y,
-      ),
-      EffectController(duration: 0.1),
-    ));
+
+    if (resolvedOffsetX.abs() >= 0 && duration > 0) {
+      add(MoveByEffect(
+        Vector2(
+          resolvedOffsetX,
+          0,
+        ),
+        EffectController(duration: duration),
+      ));
+    }
   }
 }
