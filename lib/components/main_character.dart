@@ -13,7 +13,9 @@ import 'package:game_failing_down/components/floors/normal_floor.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/config.dart';
+import 'package:game_failing_down/core/extensions/extensions.dart';
 import 'package:game_failing_down/core/utilities/utilities.dart';
+import 'package:game_failing_down/core/utils/utils.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/core/utilities/utility.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
@@ -155,8 +157,10 @@ class MainCharacter extends PositionComponent
         state = BunnyState.stand;
       }
     } else if (other is NormalFloor) {
-      if (other.position.y - rabbit.y > 40) {
-        NsLogger.collision('Touch normal floor, pos: (${rabbit.x}, ${rabbit.y})');
+      // FIXME: 要解決從側邊踩進，會有可能踩在空氣地板
+      if ((other.topLeft.dy - rabbit.y).abs() < 5 &&
+          getIntersectionOverlap(rabbit.x, rabbit.x + playerSize.width, other.topLeft.dx, other.bottomRight.dx) > 10) {
+        NsLogger.collision('Touch normal floor, pos: (${rabbit.x}, ${rabbit.y}) (floor: ${other.topLeft}), overlay: ${getIntersectionOverlap(rabbit.x, rabbit.x + playerSize.width, other.topLeft.dx, other.bottomRight.dx)}');
         isStandOnFloor = true;
         state = BunnyState.stand;
         velocity.y = other.velocity.y;
@@ -166,6 +170,12 @@ class MainCharacter extends PositionComponent
     } else {
       debugPrint('collision with $other');
     }
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    // print('collision with $other');
   }
 
   @override

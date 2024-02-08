@@ -28,6 +28,14 @@ class NormalFloor extends RectangleComponent
             children: [RectangleHitbox()]);
   final Vector2 velocity;
 
+  Offset get topLeft {
+    return Offset(position.x - width / 2, position.y - height);
+  }
+
+  Offset get bottomRight {
+    return Offset(position.x + width / 2, position.y);
+  }
+
   NormalFloor.wide({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(130, 50),
       anchor: Anchor.bottomCenter,
