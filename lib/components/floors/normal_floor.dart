@@ -1,15 +1,14 @@
 import 'dart:math';
+import 'dart:ui' as ui;
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/components/play_area.dart';
-import 'package:game_failing_down/components/spikes.dart';
+import 'package:game_failing_down/config.dart';
+import 'package:game_failing_down/core/utilities/utilities.dart';
 import 'package:game_failing_down/ns_runner.dart';
-import '../../config.dart';
-import '../../core/utilities/utility.dart';
-import 'dart:ui' as UI;
 
 enum FloorType {
   small,
@@ -37,6 +36,7 @@ class NormalFloor extends RectangleComponent
         ..style = PaintingStyle.fill,
       children: [RectangleHitbox()]
   );
+
   NormalFloor.small({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(100, 50),
       anchor: Anchor.bottomCenter,
@@ -45,6 +45,7 @@ class NormalFloor extends RectangleComponent
         ..style = PaintingStyle.fill,
       children: [RectangleHitbox()]
   );
+
   NormalFloor.tall({required this.velocity, super.position, required double radius}) : super(
     size: Vector2(160, 50),
       anchor: Anchor.bottomCenter,
@@ -64,20 +65,20 @@ class NormalFloor extends RectangleComponent
     final obstacleType = values.random(random);
     switch (obstacleType) {
       case FloorType.small:
-        return NormalFloor.small(velocity: velocity, position: position,radius: radius);
+        return NormalFloor.small(velocity: velocity, position: position, radius: radius);
       case FloorType.tall:
-        return NormalFloor.tall(velocity: velocity, position: position,radius: radius);
+        return NormalFloor.tall(velocity: velocity, position: position, radius: radius);
       case FloorType.wide:
-        return NormalFloor.wide(velocity: velocity, position: position,radius: radius);
+        return NormalFloor.wide(velocity: velocity, position: position, radius: radius);
     }
   }
-  UI.Image? image;
+  ui.Image? image;
   @override
   Future<void> onLoad() async {
     String imgSrc = "";
-    if(width ==100) {
+    if (width == 100) {
       imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_grass.png';
-    } else if(width ==130) {
+    } else if (width == 130) {
       imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_stone.png';
     } else {
       imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_wood.png';
@@ -95,8 +96,15 @@ class NormalFloor extends RectangleComponent
   void update(double dt) {
     super.update(dt);
     position.y -= velocity.y * dt;
-    if (position.y < -100) {
-      removeFromParent();
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    if (other is PlayArea) {
+      if (position.y <= 0) {
+        removeFromParent();
+      }
     }
   }
 }
