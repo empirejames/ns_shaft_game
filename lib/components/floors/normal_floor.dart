@@ -1,13 +1,13 @@
 import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/image_composition.dart';
 import 'package:flutter/material.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/config.dart';
-import 'package:game_failing_down/core/utilities/utilities.dart';
 import 'package:game_failing_down/ns_runner.dart';
 
 enum FloorType {
@@ -26,7 +26,9 @@ class NormalFloor extends RectangleComponent
             size: Vector2(brickWidth, brickHeight),
             anchor: Anchor.bottomCenter,
             children: [RectangleHitbox()]);
+
   final Vector2 velocity;
+  late Sprite _sprite;
 
   Offset get topLeft {
     return Offset(position.x - width / 2, position.y - height);
@@ -80,24 +82,25 @@ class NormalFloor extends RectangleComponent
         return NormalFloor.wide(velocity: velocity, position: position, radius: radius);
     }
   }
-  ui.Image? image;
+  // ui.Image? image;
   @override
   Future<void> onLoad() async {
     String imgSrc = "";
     if (width == 100) {
-      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_grass.png';
+      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_grass.png';
     } else if (width == 130) {
-      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_stone.png';
+      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_stone.png';
     } else {
-      imgSrc = 'assets/images/kenney_jumper_pack/PNG/Environment/ground_wood.png';
+      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_wood.png';
     }
-    image = await Utility.loadImage(imgSrc,Size(width, height));
+    final floor = await Flame.images.load(imgSrc);
+    _sprite = Sprite(floor);
   }
 
   @override
   void render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawImage(image!, Offset.zero, paint);
+    // super.render(canvas);
+    _sprite.render(canvas, size: size);
   }
 
   @override
