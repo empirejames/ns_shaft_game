@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'dart:ui' as ui;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
-import 'package:flutter/cupertino.dart';
 
 class Utility {
 

@@ -6,6 +6,7 @@ import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/widget/control_overlay.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
 import 'package:game_failing_down/widget/info_overlay.dart';
+
 import 'ns_runner.dart';
 
 void main() async {
@@ -37,7 +38,7 @@ void main() async {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 70),
+                        SizedBox(height: 80),
                         InfoOverlay(),
                       ],
                     ),

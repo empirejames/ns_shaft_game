@@ -82,7 +82,7 @@ class NormalFloor extends RectangleComponent
         return NormalFloor.wide(velocity: velocity, position: position, radius: radius);
     }
   }
-  // ui.Image? image;
+
   @override
   Future<void> onLoad() async {
     String imgSrc = "";

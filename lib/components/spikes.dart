@@ -1,49 +1,46 @@
-import 'dart:ui' as UI;
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/ns_runner.dart';
+import 'package:game_failing_down/others/asset_path.dart';
 
-import '../config.dart';
-import '../core/utilities/utility.dart';
-import 'floors/normal_floor.dart';
+/// 51x87 is raw image size
+const _displayImageSize = Size(51 / 2, 87 / 2);
 
-class Spikes extends RectangleComponent
-    with CollisionCallbacks, HasGameReference<NsRunner> {
+class Spikes extends RectangleComponent with CollisionCallbacks, HasGameReference<NsRunner> {
   Spikes(Vector2 position)
       : super(
           position: position,
-          size: Vector2(100, 50),
+          size: Vector2(95, 53),
           anchor: Anchor.bottomCenter,
           children: [RectangleHitbox()],
         );
 
-  UI.Image? image;
+  late Sprite _sprite;
 
   @override
   Future<void> onLoad() async {
-    const String spikesBottom = 'assets/images/kenney_jumper_pack/PNG/Environment/nails.png';
-    image = await Utility.loadImage(spikesBottom, const Size(100, 50));
+    final floor = await Flame.images.load(AssetPaths.spike_bottom);
+    _sprite = Sprite(floor);
   }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    final paint = Paint()
-      ..color = const Color(0xff1e6091)
-      ..style = PaintingStyle.fill;
-    double part = game.width % 100;
+    double part = game.width ~/ _displayImageSize.width + game.width % 100;
     for (int i = 0; i < part; i++) {
-      canvas.drawImage(image!, Offset(i * 100, 80), paint);
+      _sprite.render(
+        canvas,
+        size: Vector2(_displayImageSize.width, _displayImageSize.height),
+        position: Vector2(i * _displayImageSize.width, 60),
+      );
     }
   }
 
   @override
   @mustCallSuper
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
   }
 }

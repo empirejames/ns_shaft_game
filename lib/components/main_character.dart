@@ -6,18 +6,15 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
-import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/floors/normal_floor.dart';
+import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/play_area.dart';
 import 'package:game_failing_down/components/spikes.dart';
 import 'package:game_failing_down/config.dart';
-import 'package:game_failing_down/core/extensions/extensions.dart';
 import 'package:game_failing_down/core/utilities/utilities.dart';
 import 'package:game_failing_down/core/utils/utils.dart';
 import 'package:game_failing_down/ns_runner.dart';
-import 'package:game_failing_down/core/utilities/utility.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
 
 const _playerSize = Size(60, 100);
@@ -165,7 +162,7 @@ class MainCharacter extends PositionComponent
         state = BunnyState.stand;
         velocity.y = other.velocity.y;
       }
-    }  else if (other is Spikes) {
+    } else if (other is Spikes) {
       NsLogger.collision('Touch spikes, pos: (${rabbit.x}, ${rabbit.y})');
     } else {
       debugPrint('collision with $other');

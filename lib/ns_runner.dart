@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:async' as async_pkg;
 import 'dart:math' as math;
 import 'dart:math';
 
@@ -18,7 +19,6 @@ import 'package:game_failing_down/ns_shaft_world.dart';
 import 'components/floors/normal_floor.dart';
 import 'components/play_area.dart';
 import 'config.dart';
-import 'dart:async' as async_pkg;
 
 class NsRunner extends FlameGame<NSShaftWorld>
     with HasCollisionDetection, KeyboardEvents {
@@ -38,13 +38,14 @@ class NsRunner extends FlameGame<NSShaftWorld>
       double level = 100;
       double x = math.Random().nextDouble() * world.screenSize.width;
       double y = world.screenSize.height;
-      Vector2 position = Vector2(x, y);
-      Vector2 speed = Vector2(level, level);
-      world.add(NormalFloor.random(
+      world.add(
+        NormalFloor.random(
           radius: ballRadius,
-          position: position,
-          velocity: speed.normalized()
-            ..scale(height / 4), random: Random()));
+          position: Vector2(x, y),
+          velocity: Vector2(level, level).normalized()
+            ..scale(height / 4), random: Random(),
+        ),
+      );
     });
   }
 
