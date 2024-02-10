@@ -49,5 +49,13 @@ flutter:
     - assets/images/kenney_jumper_pack/Vector/
     - assets/images/kenney_onscreen-controls/
     - assets/images/kenney_onscreen-controls/Sprites/
+    - assets/images/kenney_onscreen-controls/Sprites/flat-dark/
+    - assets/images/kenney_onscreen-controls/Sprites/flat-light/
+    - assets/images/kenney_onscreen-controls/Sprites/line-dark/
+    - assets/images/kenney_onscreen-controls/Sprites/line-light/
+    - assets/images/kenney_onscreen-controls/Sprites/shaded-dark/
+    - assets/images/kenney_onscreen-controls/Sprites/shaded-light/
+    - assets/images/kenney_onscreen-controls/Sprites/transparent-dark/
+    - assets/images/kenney_onscreen-controls/Sprites/transparent-light/
     - assets/images/kenney_onscreen-controls/Spritesheets/
     - assets/images/kenney_onscreen-controls/Vector/

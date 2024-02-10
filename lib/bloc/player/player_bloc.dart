@@ -6,7 +6,15 @@ part 'player_event.dart';
 part 'player_state.dart';
 
 enum Direction {
-  left, right, none
+  left, right, none;
+
+  Direction? get opposite {
+    return switch (this) {
+      Direction.left => Direction.right,
+      Direction.right => Direction.left,
+      Direction.none => null,
+    };
+  }
 }
 
 enum GameStatus {
