@@ -47,3 +47,7 @@ flutter:
     - assets/images/kenney_jumper_pack/PNG/Players/
     - assets/images/kenney_jumper_pack/Spritesheets/
     - assets/images/kenney_jumper_pack/Vector/
+    - assets/images/kenney_onscreen-controls/
+    - assets/images/kenney_onscreen-controls/Sprites/
+    - assets/images/kenney_onscreen-controls/Spritesheets/
+    - assets/images/kenney_onscreen-controls/Vector/
