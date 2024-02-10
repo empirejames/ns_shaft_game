@@ -11,10 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame: ^1.14.0
+
+  # Flame
+  flame: ^1.15.0
+  flame_bloc: ^1.10.10
+  flame_audio: ^2.1.8
+
+  # Others
   image: ^4.1.6
-  cupertino_icons: ^1.0.2
-  flame_bloc: ^1.10.9
+  cupertino_icons: ^1.0.6
   equatable: ^2.0.5
   flutter_bloc: ^8.1.3
 
