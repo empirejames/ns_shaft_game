@@ -3,6 +3,7 @@ import 'dart:async' as async_pkg;
 import 'dart:math' as math;
 import 'dart:math';
 
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -22,16 +23,20 @@ import 'config.dart';
 
 class NsRunner extends FlameGame<NSShaftWorld>
     with HasCollisionDetection, KeyboardEvents {
-  late double tileSize;
-  final PlayerBloc bloc;
-  late MainCharacter player;
-  late LevelTimer levelTimer;
-
-  Size get getScreenSize => world.screenSize;
 
   NsRunner({
     required this.bloc,
   }) : super(world: NSShaftWorld());
+
+  late double tileSize;
+  final PlayerBloc bloc;
+
+  Size get getScreenSize => world.screenSize;
+
+  // flame components
+  late MainCharacter player;
+  late LevelTimer levelTimer;
+  late PlayArea _playArea;
 
   createComponent(NSShaftWorld world) {
     async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
@@ -69,8 +74,13 @@ class NsRunner extends FlameGame<NSShaftWorld>
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
-    camera.viewfinder.anchor = Anchor.topLeft;
-    world.add(PlayArea());
+    camera = CameraComponent(
+      world: world,
+      viewfinder: Viewfinder()..anchor = Anchor.topLeft,
+      viewport: FixedAspectRatioViewport(aspectRatio: gameWidth / gameHeight),
+    );
+    _playArea = PlayArea();
+    world.add(_playArea);
     world.add(Spikes(Vector2(0, 0)));
     initFloor();
     createComponent(world);
@@ -117,8 +127,16 @@ class NsRunner extends FlameGame<NSShaftWorld>
     return KeyEventResult.handled;
   }
 
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+  }
+
   void resize(Size size) {
+    print('======= $size');
     world.screenSize = size;
+    camera.viewport = FixedSizeViewport(size.width, size.height);
+    _playArea.size = Vector2(size.width, size.height);
     tileSize = world.screenSize.width / 9;
   }
 }

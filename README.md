@@ -19,4 +19,5 @@
 - Desktop Support (注意解析度、尺寸、比例、RWD、)
 - 搖桿支援
   - https://github.com/RainwayApp/flutter_gamepad 有點舊，找 fork
+- 需隨著 window size 改變而改變 UI、畫面位置
 - 

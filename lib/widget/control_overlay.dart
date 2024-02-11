@@ -23,6 +23,15 @@ class _ControlOverlayState extends State<ControlOverlay> {
     required String assetPath,
     required String assetPathPressed,
   }) {
+    onTapCancelOrUp() {
+      if (_direction == direction) {
+        context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
+        setState(() {
+          _direction = Direction.none;
+        });
+      }
+    }
+
     return Align(
       alignment: direction == Direction.left ? Alignment.bottomLeft : Alignment.bottomRight,
       child: GestureDetector(
@@ -32,14 +41,8 @@ class _ControlOverlayState extends State<ControlOverlay> {
             _direction = direction;
           });
         },
-        onTapUp: (_) {
-          if (_direction == direction) {
-            context.read<PlayerBloc>().add(PlayerUpdateDirectionEvent(Direction.none));
-            setState(() {
-              _direction = Direction.none;
-            });
-          }
-        },
+        onTapUp: (_) => onTapCancelOrUp(),
+        onTapCancel: () => onTapCancelOrUp(),
         child: SizedBox(
           width: _controlSize,
           height: _controlSize,

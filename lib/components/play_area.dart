@@ -13,6 +13,13 @@ class PlayArea extends RectangleComponent with HasGameReference<NsRunner> {
   );
 
   @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    // this.size.setValues(size.x, size.y);
+    print(this.size);
+  }
+
+  @override
   FutureOr<void> onLoad() async {
     super.onLoad();
     size = Vector2(game.width, game.height);
