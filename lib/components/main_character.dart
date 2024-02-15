@@ -186,7 +186,13 @@ class MainCharacter extends PositionComponent
 
   @override
   void onNewState(PlayerState state) {
-    direction = state.direction;
+    if (state.status == GameStatus.end) {
+      game.overlays.add(GameLostDialog.overlayKey);
+      game.levelTimer.removeFromParent();
+      removeFromParent();
+    } else {
+      direction = state.direction;
+    }
   }
 
   final Vector2 velocity;

@@ -52,7 +52,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     if (life > 0) {
       emit(state.copyWith(life: life));
     } else {
-      emit(state.copyWith(status: GameStatus.end));
+      emit(state.copyWith(status: GameStatus.end, life: 0));
     }
   }
 }
