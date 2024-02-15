@@ -18,11 +18,11 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> { // with WidgetsBindingObserver
+class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // with WidgetsBindingObserver
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     WidgetsBinding.instance.platformDispatcher.onMetricsChanged = () {
       if (MyPlatformUtility.isDesktop) {
@@ -36,8 +36,18 @@ class _GamePageState extends State<GamePage> { // with WidgetsBindingObserver
 
   @override
   void dispose() {
-    // WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      widget.nsGame.isStartGame(false);
+    } else if (state == AppLifecycleState.resumed) {
+      widget.nsGame.isStartGame(true);
+    }
   }
 
   // @override

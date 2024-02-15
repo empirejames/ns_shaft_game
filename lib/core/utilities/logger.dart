@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:game_failing_down/app/configs.dart';
+import '../../config.dart';
 
 class NsLogger {
   NsLogger._();

@@ -37,9 +37,11 @@ class NsRunner extends FlameGame<NSShaftWorld>
   late MainCharacter player;
   late LevelTimer levelTimer;
   late PlayArea _playArea;
+  late async_pkg.Timer createFloorTimer;
 
   createComponent(NSShaftWorld world) {
-    async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+    print("createComponent.....");
+    createFloorTimer = async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       double level = 100;
       double x = math.Random().nextDouble() * world.screenSize.width;
       double y = world.screenSize.height;
@@ -70,6 +72,14 @@ class NsRunner extends FlameGame<NSShaftWorld>
   // Add this variable
   double get width => size.x;
   double get height => size.y;
+
+  void isStartGame(bool isStart) {
+    if (isStart) {
+      createComponent(world);
+    } else {
+      createFloorTimer.cancel();
+    }
+  }
 
   @override
   FutureOr<void> onLoad() async {
