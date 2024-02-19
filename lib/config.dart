@@ -23,6 +23,7 @@ const brickColors = [
 ];
 
 const gameLife = 6;
+const double periodSpeedUpTime = 10;
 
 const gameWidth = 820.0;
 const gameHeight = 1600.0;

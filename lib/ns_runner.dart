@@ -40,7 +40,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
   late async_pkg.Timer createFloorTimer;
 
   createComponent(NSShaftWorld world) {
-    print("createComponent.....");
     createFloorTimer = async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       double level = 100;
       double x = math.Random().nextDouble() * world.screenSize.width;
@@ -50,7 +49,9 @@ class NsRunner extends FlameGame<NSShaftWorld>
           radius: ballRadius,
           position: Vector2(x, y),
           velocity: Vector2(level, level).normalized()
-            ..scale(height / 4), random: Random(),
+            ..scale(height / 4),
+          level: bloc.state.level.toDouble(),
+          random: Random(),
         ),
       );
     });

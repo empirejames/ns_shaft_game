@@ -69,17 +69,19 @@ class NormalFloor extends RectangleComponent
     required Vector2? position,
     required double radius,
     required Vector2 velocity,
+    required double level,
     Random? random,
   }) {
     const values = [FloorType.small, FloorType.tall, FloorType.wide];
     final obstacleType = values.random(random);
+    Vector2 speedLevel = Vector2(velocity.x + level * 50, velocity.y + level * 50);
     switch (obstacleType) {
       case FloorType.small:
-        return NormalFloor.small(velocity: velocity, position: position, radius: radius);
+        return NormalFloor.small(velocity: speedLevel, position: position, radius: radius);
       case FloorType.tall:
-        return NormalFloor.tall(velocity: velocity, position: position, radius: radius);
+        return NormalFloor.tall(velocity: speedLevel, position: position, radius: radius);
       case FloorType.wide:
-        return NormalFloor.wide(velocity: velocity, position: position, radius: radius);
+        return NormalFloor.wide(velocity: speedLevel, position: position, radius: radius);
     }
   }
 
