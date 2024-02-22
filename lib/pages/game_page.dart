@@ -4,6 +4,7 @@ import 'package:game_failing_down/core/utilities/my_platform_utility.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/widget/control_overlay.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
+import 'package:game_failing_down/widget/dialogs/player_name_dialog.dart';
 import 'package:game_failing_down/widget/info_overlay.dart';
 
 class GamePage extends StatefulWidget {
