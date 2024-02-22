@@ -26,18 +26,20 @@ class GameLostDialog extends StatelessWidget {
     List<String> rankList = prefs.getStringList("ranks") ?? [];
     rankList.add("$playerName-${game.bloc.state.level}");
     List<String> tmp = rankList.toSet().toList();
-    getPlayerRank(tmp);
+    playerRank = getPlayerRank(tmp);
     prefs.setStringList("ranks", sortList(tmp));
     return prefs.getStringList('ranks') ?? [];
   }
 
-  getPlayerRank(List<String> list) {
+  String getPlayerRank(List<String> list) {
     for (int i = 0; i < list.length; i++) {
       String name = list[i].toString().split("-")[0];
       if (name == playerName) {
         playerRank = (i + 1).toString();
+        return playerRank;
       }
     }
+    return "";
   }
 
   List<String> sortList(List<String> list) {
