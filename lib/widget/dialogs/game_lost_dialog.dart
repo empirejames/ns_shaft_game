@@ -19,14 +19,16 @@ class GameLostDialog extends StatelessWidget {
 
   String playerName = "";
   String playerRank = "";
+  String garbageCollection = "";
 
   Future<List<String>> nameRetriever(NsRunner game) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     playerName = prefs.getString("playerName")!;
     List<String> rankList = prefs.getStringList("ranks") ?? [];
-    rankList.add("$playerName-${game.bloc.state.level}");
+    rankList.add("$playerName-${game.bloc.state.garbage}");
     List<String> tmp = rankList.toSet().toList();
     playerRank = getPlayerRank(tmp);
+    garbageCollection = game.bloc.state.garbage.toString();
     prefs.setStringList("ranks", sortList(tmp));
     return prefs.getStringList('ranks') ?? [];
   }
@@ -35,7 +37,7 @@ class GameLostDialog extends StatelessWidget {
     for (int i = 0; i < list.length; i++) {
       String name = list[i].toString().split("-")[0];
       if (name == playerName) {
-        playerRank = (i + 1).toString();
+        playerRank = i.toString();
         return playerRank;
       }
     }
@@ -81,7 +83,7 @@ class GameLostDialog extends StatelessWidget {
                     'assets/images/kenney_jumper_pack/PNG/Players/bunny1_hurt.png'),
               ),
               const Text(
-                'Game Over',
+                'Thank you',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 35,
@@ -91,7 +93,7 @@ class GameLostDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '$playerName your are in Rank $playerRank.',
+                '$playerName collecting $garbageCollection of garbage',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black54,

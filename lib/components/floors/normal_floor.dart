@@ -75,7 +75,7 @@ class NormalFloor extends RectangleComponent
 
     const values = [FloorType.small, FloorType.tall, FloorType.wide];
     final obstacleType = values.random(random);
-    Vector2 speedLevel = Vector2(velocity.x + level * 30, velocity.y + level * 30);
+    Vector2 speedLevel = Vector2(velocity.x + level * 20, velocity.y + level * 20);
     switch (obstacleType) {
       case FloorType.small:
         return NormalFloor.small(velocity: speedLevel, position: position, radius: radius);
@@ -118,6 +118,7 @@ class NormalFloor extends RectangleComponent
     if (other is PlayArea) {
       if (position.y <= 0) {
         removeFromParent();
+
       }
     }
   }

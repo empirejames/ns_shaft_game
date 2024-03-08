@@ -22,6 +22,7 @@ const brickColors = [
   Color(0xff577590),
 ];
 
+const gameGarbage = 0;
 const gameLife = 6;
 const double periodSpeedUpTime = 10;
 

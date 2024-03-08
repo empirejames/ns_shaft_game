@@ -3,12 +3,15 @@ part of 'player_bloc.dart';
 class PlayerState extends Equatable {
   const PlayerState({
     this.life = gameLife,
+    this.garbage = gameGarbage,
     this.direction = Direction.none,
     this.status = GameStatus.waiting,
     this.level = 1,
   });
 
   final int life;
+
+  final int garbage;
 
   final Direction direction;
 
@@ -19,10 +22,12 @@ class PlayerState extends Equatable {
   PlayerState copyWith({
     Direction? direction,
     int? life,
+    int? garbage,
     GameStatus? status,
     int? level,
   }) {
     return PlayerState(
+      garbage: garbage ?? this.garbage,
       direction: direction ?? this.direction,
       life: life ?? this.life,
       status: status ?? this.status,
@@ -31,5 +36,5 @@ class PlayerState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [ life, direction, status, level ];
+  List<Object?> get props => [ life, garbage, direction, status, level ];
 }

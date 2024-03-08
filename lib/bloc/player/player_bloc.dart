@@ -28,6 +28,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     on<PlayerStartEvent>(_startGame);
     on<AddLevelEvent>(_addLevel);
     on<ReduceLifeEvent>(_reduceLife);
+    on<AddGarbageEvent>(_countGarbage);
   }
 
   _updateDirection(PlayerUpdateDirectionEvent event, Emitter<PlayerState> emit) {
@@ -54,5 +55,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     } else {
       emit(state.copyWith(status: GameStatus.end, life: 0));
     }
+  }
+
+  _countGarbage(_, Emitter<PlayerState> emit) {
+    final garbage = state.garbage + 1;
+    emit(state.copyWith(garbage:  garbage));
   }
 }

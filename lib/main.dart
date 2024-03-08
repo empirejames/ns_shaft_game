@@ -1,7 +1,6 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_failing_down/app/app.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/router.dart';
 

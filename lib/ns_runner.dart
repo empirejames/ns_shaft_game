@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_failing_down/bloc/player/player_bloc.dart';
+import 'package:game_failing_down/components/garbage.dart';
 import 'package:game_failing_down/components/level_timer.dart';
 import 'package:game_failing_down/components/main_character.dart';
 import 'package:game_failing_down/components/spikes.dart';
@@ -40,7 +41,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
   late async_pkg.Timer createFloorTimer;
 
   createComponent(NSShaftWorld world) {
-    createFloorTimer = async_pkg.Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+    createFloorTimer = async_pkg.Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       double level = 100;
       double x = math.Random().nextDouble() * world.screenSize.width;
       double y = world.screenSize.height;
@@ -54,6 +55,19 @@ class NsRunner extends FlameGame<NSShaftWorld>
           random: Random(),
         ),
       );
+    });
+  }
+
+  createGarbage(NSShaftWorld world) {
+    createFloorTimer =
+        async_pkg.Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      double level = 100;
+      double x = math.Random().nextDouble() * world.screenSize.width;
+      double y = world.screenSize.height;
+      world.add(Garbage(
+          position: Vector2(x, y),
+          velocity: Vector2(level, level).normalized()..scale(height / 4),
+          radius: ballRadius));
     });
   }
 
@@ -95,6 +109,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
     world.add(Spikes(Vector2(0, 0)));
     initFloor();
     createComponent(world);
+    createGarbage(world);
 
     await world.add(
       FlameBlocProvider<PlayerBloc, PlayerState>.value(
@@ -112,7 +127,7 @@ class NsRunner extends FlameGame<NSShaftWorld>
         ],
       ),
     );
-    debugMode = true;
+    debugMode = false;
   }
 
   @override
