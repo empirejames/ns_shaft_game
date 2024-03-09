@@ -38,6 +38,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/others/
     - assets/images/kenney_jumper_pack/
     - assets/images/kenney_jumper_pack/PNG/
     - assets/images/kenney_jumper_pack/PNG/Background/

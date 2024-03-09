@@ -1,25 +1,27 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_failing_down/bloc/player/player_bloc.dart';
 import 'package:game_failing_down/core/utilities/my_platform_utility.dart';
 import 'package:game_failing_down/ns_runner.dart';
 import 'package:game_failing_down/widget/control_overlay.dart';
 import 'package:game_failing_down/widget/dialogs/game_lost_dialog.dart';
-import 'package:game_failing_down/widget/dialogs/player_name_dialog.dart';
 import 'package:game_failing_down/widget/info_overlay.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({
     super.key,
-    required this.nsGame,
   });
 
-  final NsRunner nsGame;
+  // final NsRunner nsGame;
 
   @override
   State<GamePage> createState() => _GamePageState();
 }
 
 class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // with WidgetsBindingObserver
+  NsRunner? _nsGame;
+
   @override
   void initState() {
     super.initState();
@@ -27,12 +29,15 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // wi
 
     WidgetsBinding.instance.platformDispatcher.onMetricsChanged = () {
       if (MyPlatformUtility.isDesktop) {
-        final view = View.of(context);
-        final screenSize = view.physicalSize / view.devicePixelRatio;
-        widget.nsGame.resize(screenSize);
-        setState(() { });
+        _updateSize();
       }
     };
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final bloc = context.read<PlayerBloc>();
+      _nsGame = NsRunner(bloc: bloc);
+      _updateSize();
+    });
   }
 
   @override
@@ -45,9 +50,24 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // wi
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      widget.nsGame.isStartGame(false);
+      _nsGame?.isStartGame(false);
     } else if (state == AppLifecycleState.resumed) {
-      widget.nsGame.isStartGame(true);
+      _nsGame?.isStartGame(true);
+    }
+  }
+
+  void _updateSize() {
+    if (MyPlatformUtility.isDesktop) {
+      final view = View.of(context);
+      final screenSize = view.physicalSize / view.devicePixelRatio;
+      _nsGame?.resize(screenSize);
+    } else {
+      final screenSize = MediaQuery.of(context).size;
+      _nsGame?.resize(screenSize);
+    }
+
+    if (mounted) {
+      setState(() { });
     }
   }
 
@@ -65,13 +85,21 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // wi
 
   @override
   Widget build(BuildContext context) {
+    if (_nsGame == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
           Positioned.fill(
             child: GameWidget(
-              game: widget.nsGame,
+              game: _nsGame!,
               overlayBuilderMap: {
                 GameLostDialog.overlayKey: (BuildContext context, NsRunner game) {
                   return GameLostDialog(game);
@@ -79,19 +107,27 @@ class _GamePageState extends State<GamePage> with WidgetsBindingObserver { // wi
               },
             ),
           ),
-          const SafeArea(
-            child: Stack(
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: 80),
-                    InfoOverlay(),
-                  ],
-                ),
-                ControlOverlay(),
-              ],
+          const Positioned.fill(
+            child: SafeArea(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 80),
+                      InfoOverlay(),
+                    ],
+                  ),
+                ],
+              ),
             ),
+          ),
+          const Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: ControlOverlay(),
           ),
         ],
       ),

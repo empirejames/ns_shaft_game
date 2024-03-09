@@ -14,18 +14,18 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => PlayerNameDialog(),
+      builder: (context, state) => const PlayerNameDialog(),
       routes: [
         GoRoute(
           path: 'play',
           builder: (context, state) {
-            final bloc = context.read<PlayerBloc>();
-            final nsGame = NsRunner(bloc: bloc);
+            // return const GamePage();
             return FutureBuilder(
-                future: Flame.device.fullScreen(),
-                builder: (_, __) {
-                  return GamePage(nsGame: nsGame);
-                });
+              future: Flame.device.fullScreen(),
+              builder: (_, __) {
+                return const GamePage();
+              },
+            );
           },
         ),
       ],

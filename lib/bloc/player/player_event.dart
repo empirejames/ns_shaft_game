@@ -31,7 +31,7 @@ class ReduceLifeEvent extends PlayerEvent {
   List<Object?> get props => [];
 }
 
-class AddGarbageEvent extends PlayerEvent {
+class CollectGarbageEvent extends PlayerEvent {
   @override
   List<Object?> get props => [];
 }

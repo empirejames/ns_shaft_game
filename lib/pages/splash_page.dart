@@ -30,11 +30,11 @@ class _SplashPageState extends State<SplashPage> {
         await DesktopUtility.init();
       }
 
-      final nsGame = NsRunner(bloc: bloc);
+      // final nsGame = NsRunner(bloc: bloc);
 
-      navigator.pushReplacement(
-        MaterialPageRoute(builder: (_) => GamePage(nsGame: nsGame)),
-      );
+      // navigator.pushReplacement(
+      //   MaterialPageRoute(builder: (_) => GamePage(nsGame: nsGame)),
+      // );
     });
   }
 

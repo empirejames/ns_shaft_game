@@ -27,7 +27,8 @@ class NsRunner extends FlameGame<NSShaftWorld>
 
   NsRunner({
     required this.bloc,
-  }) : super(world: NSShaftWorld());
+  }) : _playArea = PlayArea(),
+      super(world: NSShaftWorld());
 
   late double tileSize;
   final PlayerBloc bloc;
@@ -104,7 +105,6 @@ class NsRunner extends FlameGame<NSShaftWorld>
       viewfinder: Viewfinder()..anchor = Anchor.topLeft,
       viewport: FixedAspectRatioViewport(aspectRatio: gameWidth / gameHeight),
     );
-    _playArea = PlayArea();
     world.add(_playArea);
     world.add(Spikes(Vector2(0, 0)));
     initFloor();
@@ -141,10 +141,10 @@ class NsRunner extends FlameGame<NSShaftWorld>
 
     switch (event.logicalKey) {
       case LogicalKeyboardKey.arrowLeft:
-        player.moveBy(-batStep);
+        player.moveBy(-batStep * 4);
         break;
       case LogicalKeyboardKey.arrowRight:
-        player.moveBy(batStep);
+        player.moveBy(batStep * 4);
         break;
       default:
         return KeyEventResult.skipRemainingHandlers;

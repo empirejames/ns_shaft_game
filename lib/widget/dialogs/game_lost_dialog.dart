@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/player/player_bloc.dart';
 
-class GameLostDialog extends StatelessWidget {
-  GameLostDialog(
+class GameLostDialog extends StatefulWidget {
+  const GameLostDialog(
     this.game, {
     super.key,
   });
@@ -17,40 +17,45 @@ class GameLostDialog extends StatelessWidget {
   /// For [GameWidget.overlayBuilderMap]
   static const String overlayKey = 'game-lost-dialog-key';
 
-  String playerName = "";
-  String playerRank = "";
-  String garbageCollection = "";
+  @override
+  State<GameLostDialog> createState() => _GameLostDialogState();
+}
+
+class _GameLostDialogState extends State<GameLostDialog> {
+  String _playerName = '';
+  String _playerRank = '';
+  String _garbageCollection = '';
 
   Future<List<String>> nameRetriever(NsRunner game) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    playerName = prefs.getString("playerName")!;
-    List<String> rankList = prefs.getStringList("ranks") ?? [];
-    rankList.add("$playerName-${game.bloc.state.garbage}");
+    _playerName = prefs.getString('playerName')!;
+    List<String> rankList = prefs.getStringList('ranks') ?? [];
+    rankList.add('$_playerName-${game.bloc.state.garbage}');
     List<String> tmp = rankList.toSet().toList();
-    playerRank = getPlayerRank(tmp);
-    garbageCollection = game.bloc.state.garbage.toString();
-    prefs.setStringList("ranks", sortList(tmp));
+    _playerRank = getPlayerRank(tmp);
+    _garbageCollection = game.bloc.state.garbage.toString();
+    prefs.setStringList('ranks', sortList(tmp));
     return prefs.getStringList('ranks') ?? [];
   }
 
   String getPlayerRank(List<String> list) {
     for (int i = 0; i < list.length; i++) {
-      String name = list[i].toString().split("-")[0];
-      if (name == playerName) {
-        playerRank = i.toString();
-        return playerRank;
+      String name = list[i].toString().split('-')[0];
+      if (name == _playerName) {
+        _playerRank = i.toString();
+        return _playerRank;
       }
     }
-    return "";
+    return '';
   }
 
   List<String> sortList(List<String> list) {
     List<String> sortList = list;
-    String temp = "";
+    String temp = '';
     for (int i = 0; i < list.length; i++) {
-      int rankOne = int.parse(list[i].toString().split("-")[1]);
+      int rankOne = int.parse(list[i].toString().split('-')[1]);
       for (int j = i + 1; j < list.length; j++) {
-        int rankTwo = int.parse(list[j].toString().split("-")[1]);
+        int rankTwo = int.parse(list[j].toString().split('-')[1]);
         if (rankOne < rankTwo) {
           temp = sortList[i];
           sortList[i] = sortList[j];
@@ -65,7 +70,7 @@ class GameLostDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: FutureBuilder(
-      future: nameRetriever(game),
+      future: nameRetriever(widget.game),
       builder: (_, value) {
         return Container(
           width: 300,
@@ -93,7 +98,7 @@ class GameLostDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '$playerName collecting $garbageCollection of garbage',
+                '$_playerName collected $_garbageCollection garbage',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black54,
@@ -109,7 +114,7 @@ class GameLostDialog extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: value.data?.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Text("Rank : ${index+1} :  ${value.data![index]}" ,
+                        return Text('Rank : ${index+1} :  ${value.data![index]}' ,
                           style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 20,

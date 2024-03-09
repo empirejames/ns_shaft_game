@@ -28,7 +28,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     on<PlayerStartEvent>(_startGame);
     on<AddLevelEvent>(_addLevel);
     on<ReduceLifeEvent>(_reduceLife);
-    on<AddGarbageEvent>(_countGarbage);
+    on<CollectGarbageEvent>(_countGarbage);
   }
 
   _updateDirection(PlayerUpdateDirectionEvent event, Emitter<PlayerState> emit) {
@@ -36,7 +36,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   _respwan(_, Emitter<PlayerState> emit) {
-    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn, level: 1, life: gameLife));
+    emit(state.copyWith(direction: Direction.none, status: GameStatus.respawn, level: 1, life: gameLife, garbage: 0));
   }
 
   _startGame(_, Emitter<PlayerState> emit) {
@@ -59,6 +59,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   _countGarbage(_, Emitter<PlayerState> emit) {
     final garbage = state.garbage + 1;
-    emit(state.copyWith(garbage:  garbage));
+    emit(state.copyWith(garbage: garbage));
   }
 }

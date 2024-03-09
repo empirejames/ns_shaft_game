@@ -58,7 +58,7 @@ class _ControlOverlayState extends State<ControlOverlay> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(50, 0, 50, 50),
-      child: Stack(
+      child: Row(
         children: [
           _buildArrowButton(
             context,
@@ -66,6 +66,7 @@ class _ControlOverlayState extends State<ControlOverlay> {
             assetPath: '${AssetPaths.prefix}/${AssetPaths.arrow_left_idle}',
             assetPathPressed: '${AssetPaths.prefix}/${AssetPaths.arrow_left_pressed}',
           ),
+          const Spacer(),
           _buildArrowButton(
             context,
             direction: Direction.right,

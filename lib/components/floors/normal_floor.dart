@@ -28,7 +28,10 @@ class NormalFloor extends RectangleComponent
             children: [RectangleHitbox()]);
 
   final Vector2 velocity;
-  late Sprite _sprite;
+
+  late Sprite _stoneSprite;
+  late Sprite _woodSprite;
+  late Sprite _grassSprite;
 
   Offset get topLeft {
     return Offset(position.x - width / 2, position.y - height);
@@ -72,7 +75,6 @@ class NormalFloor extends RectangleComponent
     required double level,
     Random? random,
   }) {
-
     const values = [FloorType.small, FloorType.tall, FloorType.wide];
     final obstacleType = values.random(random);
     Vector2 speedLevel = Vector2(velocity.x + level * 20, velocity.y + level * 20);
@@ -88,22 +90,23 @@ class NormalFloor extends RectangleComponent
 
   @override
   Future<void> onLoad() async {
-    String imgSrc = "";
-    if (width == 100) {
-      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_grass.png';
-    } else if (width == 130) {
-      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_stone.png';
-    } else {
-      imgSrc = 'kenney_jumper_pack/PNG/Environment/ground_wood.png';
-    }
-    final floor = await Flame.images.load(imgSrc);
-    _sprite = Sprite(floor);
+    final stoneFloor = await Flame.images.load('kenney_jumper_pack/PNG/Environment/ground_stone.png');
+    final woodFloor = await Flame.images.load('kenney_jumper_pack/PNG/Environment/ground_wood.png');
+    final grassFloor = await Flame.images.load('kenney_jumper_pack/PNG/Environment/ground_grass.png');
+
+    _stoneSprite = Sprite(stoneFloor);
+    _woodSprite = Sprite(woodFloor);
+    _grassSprite = Sprite(grassFloor);
   }
 
   @override
   void render(Canvas canvas) {
-    // super.render(canvas);
-    _sprite.render(canvas, size: size);
+    final collectedGarbageCount = game.bloc.state.garbage;
+    final sprite = collectedGarbageCount < 5 ? _stoneSprite
+        : collectedGarbageCount < 10 ? _woodSprite
+        : _grassSprite;
+
+    sprite.render(canvas, size: size);
   }
 
   @override
